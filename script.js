@@ -13,6 +13,8 @@ const assessmentFlow = document.querySelector("[data-assessment-flow]");
 const assessmentFlowWrap = document.querySelector(".assessment-flow-wrap");
 const assessmentDotsWrap = document.querySelector("[data-assessment-dots]");
 const assessmentDots = Array.from(document.querySelectorAll("[data-assessment-dots] span"));
+const newsSection = document.querySelector(".industry-news");
+const newsRail = document.querySelector("[data-news-rail]");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 const clamp = (value, min = 0, max = 1) => Math.min(Math.max(value, min), max);
@@ -382,11 +384,6 @@ const startProductSlider = () => {
   let activeIndex = Math.max(0, productSlides.findIndex((slide) => slide.classList.contains("is-active")));
   let sliderTimer = null;
   let isPaused = false;
-  const hotspots = Array.from(productStage.querySelectorAll(".product-hotspot"));
-
-  const closeHotspots = () => {
-    hotspots.forEach((hotspot) => hotspot.classList.remove("is-open"));
-  };
 
   const stopSlider = () => {
     if (!sliderTimer) return;
@@ -394,9 +391,17 @@ const startProductSlider = () => {
     sliderTimer = null;
   };
 
+  const isProductHovered = () =>
+    productStage.matches(":hover") ||
+    productSlides.some((slide) => slide.matches(":hover")) ||
+    productDots.some((dot) => dot.matches(":hover"));
+
   const startSlider = () => {
     if (reducedMotion.matches || isPaused || sliderTimer) return;
-    sliderTimer = window.setInterval(() => setProductSlide(activeIndex + 1), 3200);
+    sliderTimer = window.setInterval(() => {
+      if (isPaused || isProductHovered()) return;
+      setProductSlide(activeIndex + 1);
+    }, 3200);
   };
 
   const setProductSlide = (nextIndex) => {
@@ -406,7 +411,6 @@ const startProductSlider = () => {
     const currentSlide = productSlides[activeIndex];
     const nextSlide = productSlides[normalizedIndex];
 
-    closeHotspots();
     currentSlide.classList.remove("is-active");
     currentSlide.classList.add("is-exiting");
     nextSlide.classList.remove("is-exiting");
@@ -437,24 +441,44 @@ const startProductSlider = () => {
     });
   });
 
-  hotspots.forEach((hotspot) => {
-    hotspot.addEventListener("click", (event) => {
-      event.stopPropagation();
-      const isOpen = hotspot.classList.contains("is-open");
-      closeHotspots();
-      hotspot.classList.toggle("is-open", !isOpen);
-      isPaused = !isOpen;
-      stopSlider();
+  const pauseProductSlider = () => {
+    isPaused = true;
+    stopSlider();
+  };
 
-      if (isOpen) {
-        startSlider();
-      }
-    });
+  const resumeProductSlider = () => {
+    isPaused = false;
+    startSlider();
+  };
+
+  [productStage, ...productSlides, ...productDots].filter(Boolean).forEach((node) => {
+    node.addEventListener("pointerenter", pauseProductSlider);
+    node.addEventListener("pointerleave", resumeProductSlider);
+    node.addEventListener("mouseenter", pauseProductSlider);
+    node.addEventListener("mouseleave", resumeProductSlider);
   });
+
+  document.addEventListener(
+    "mousemove",
+    (event) => {
+      const rect = productStage.getBoundingClientRect();
+      const isInside =
+        event.clientX >= rect.left &&
+        event.clientX <= rect.right &&
+        event.clientY >= rect.top &&
+        event.clientY <= rect.bottom;
+
+      if (isInside) {
+        pauseProductSlider();
+      } else if (isPaused) {
+        resumeProductSlider();
+      }
+    },
+    { passive: true },
+  );
 
   document.addEventListener("click", (event) => {
     if (!productStage.contains(event.target)) {
-      closeHotspots();
       isPaused = false;
       startSlider();
     }
@@ -566,6 +590,58 @@ const updateStandardsEffect = () => {
   updateLedgerCardProgress(progress, outputIndex);
 };
 
+const setNewsRailLoop = (isEnabled) => {
+  if (!newsRail) return 0;
+
+  const clones = Array.from(newsRail.querySelectorAll("[data-news-clone]"));
+
+  if (!isEnabled) {
+    clones.forEach((clone) => clone.remove());
+    return 0;
+  }
+
+  const originalCards = Array.from(newsRail.querySelectorAll("article:not([data-news-clone])"));
+
+  if (!clones.length) {
+    originalCards.forEach((card) => {
+      const clone = card.cloneNode(true);
+      clone.dataset.newsClone = "";
+      clone.setAttribute("aria-hidden", "true");
+      clone.querySelectorAll("a").forEach((link) => {
+        link.tabIndex = -1;
+      });
+      newsRail.appendChild(clone);
+    });
+  }
+
+  const firstCard = originalCards[0];
+  const firstClone = newsRail.querySelector("[data-news-clone]");
+
+  return firstCard && firstClone ? Math.max(1, firstClone.offsetTop - firstCard.offsetTop) : 0;
+};
+
+const updateNewsRailEffect = () => {
+  if (!newsSection || !newsRail) return;
+
+  const shouldAnimate = !reducedMotion.matches && !window.matchMedia("(max-width: 1060px)").matches;
+  const cycleDistance = setNewsRailLoop(shouldAnimate);
+
+  if (!shouldAnimate || !cycleDistance) {
+    newsRail.style.setProperty("--news-rail-y", "0px");
+    return;
+  }
+
+  const rect = newsSection.getBoundingClientRect();
+  const maxScrollY = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
+  const startY = Math.min(Math.max(0, newsSection.offsetTop - window.innerHeight), maxScrollY);
+  const visibleHeight = newsRail.parentElement?.clientHeight || window.innerHeight;
+  const leadIn = Math.min(120, visibleHeight * 0.18);
+  const scrolled = Math.max(0, window.scrollY - startY);
+  const y = leadIn - ((scrolled / 2.8) % cycleDistance);
+
+  newsRail.style.setProperty("--news-rail-y", `${y.toFixed(1)}px`);
+};
+
 const scrollToHash = (hash, behavior = "smooth") => {
   if (!hash || hash === "#") return;
 
@@ -617,6 +693,7 @@ let scrollFrame = null;
 const updateScrollEffects = () => {
   setScrollState();
   updateStandardsEffect();
+  updateNewsRailEffect();
 };
 
 const requestScrollEffects = () => {

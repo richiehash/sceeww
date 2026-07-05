@@ -224,35 +224,13 @@
                 </div>
                 <img src="assets/web-platform.png" alt="Web learning platform dashboard interface" />
               </div>
-              <button class="product-hotspot hotspot-calendar" type="button" aria-label="Calendar planning insight">
-                <span class="hotspot-tooltip">
-                  <strong>Planning view</strong>
-                  <span>Daily work, due dates, and assignments stay visible in one teacher-ready dashboard.</span>
-                </span>
-              </button>
               <div class="phone-device">
                 <img src="assets/mobile-app.png" alt="Mobile learning application habit analytics screen" />
               </div>
             </div>
 
-            <div class="product-slide product-slide-mobile" data-product-slide style="--slide-index: 1">
-              <div class="desktop-device">
-                <div class="device-bar">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </div>
-                <img src="assets/web-platform.png" alt="Web planning dashboard interface" />
-              </div>
-              <div class="phone-device">
-                <img src="assets/mobile-app.png" alt="Mobile analytics screen" />
-              </div>
-              <button class="product-hotspot hotspot-habits" type="button" aria-label="Habit analytics insight">
-                <span class="hotspot-tooltip">
-                  <strong>Habit analytics</strong>
-                  <span>Students and families can track habit completion, mood, and consistency on mobile.</span>
-                </span>
-              </button>
+            <div class="product-slide product-slide-image" data-product-slide style="--slide-index: 1">
+              <img class="product-slide-art" src="assets/mobile-app.png" alt="Mobile habit tracking product screens" />
             </div>
 
             <div class="product-slide product-slide-desktop" data-product-slide style="--slide-index: 2">
@@ -264,42 +242,32 @@
                 </div>
                 <img src="assets/web-platform.png" alt="Student web hub interface" />
               </div>
-              <button class="product-hotspot hotspot-resources" type="button" aria-label="Student resources insight">
-                <span class="hotspot-tooltip">
-                  <strong>Student hub</strong>
-                  <span>Navigation, resources, and messages stay grouped around the learner workflow.</span>
-                </span>
-              </button>
               <div class="phone-device">
                 <img src="assets/mobile-app.png" alt="Mobile progress application screen" />
               </div>
             </div>
 
-            <div class="product-slide product-slide-mobile" data-product-slide style="--slide-index: 3">
-              <div class="desktop-device">
-                <div class="device-bar">
-                  <span></span>
-                  <span></span>
-                  <span></span>
-                </div>
-                <img src="assets/web-platform.png" alt="Web learning platform duplicate dashboard interface" />
-              </div>
-              <div class="phone-device">
-                <img src="assets/mobile-app.png" alt="Mobile learning application duplicate screen" />
-              </div>
-              <button class="product-hotspot hotspot-progress" type="button" aria-label="Progress insight">
-                <span class="hotspot-tooltip">
-                  <strong>Progress signals</strong>
-                  <span>Compact reporting helps teams spot trends without leaving the learning app.</span>
-                </span>
-              </button>
+            <div class="product-slide product-slide-image" data-product-slide style="--slide-index: 3">
+              <img class="product-slide-art" src="assets/mobile-app.png" alt="Mobile progress reporting product screens" />
             </div>
 
             <div class="product-dots" data-product-dots aria-label="Product mockup slides">
-              <button class="is-active" type="button" aria-label="Show slide 1" aria-current="true"></button>
-              <button type="button" aria-label="Show slide 2"></button>
-              <button type="button" aria-label="Show slide 3"></button>
-              <button type="button" aria-label="Show slide 4"></button>
+              <button class="is-active" type="button" aria-label="Show planning dashboard slide" aria-current="true">
+                <strong>Planning dashboard</strong>
+                <span>Calendar, due dates, and daily work.</span>
+              </button>
+              <button type="button" aria-label="Show mobile habits slide">
+                <strong>Mobile habits</strong>
+                <span>Progress patterns for families.</span>
+              </button>
+              <button type="button" aria-label="Show student hub slide">
+                <strong>Student hub</strong>
+                <span>Resources and messages in one place.</span>
+              </button>
+              <button type="button" aria-label="Show reporting signals slide">
+                <strong>Reporting signals</strong>
+                <span>Compact cards for quick trend checks.</span>
+              </button>
             </div>
           </div>
         </div>
@@ -411,31 +379,65 @@
             <h2>What education teams are tracking.</h2>
             <p>Current signals from policy, classrooms, publishers, and digital learning.</p>
           </div>
-          <div class="news-grid reveal" aria-label="Education industry news">
-            <article>
-              <span><i class="ph ph-newspaper-clipping" aria-hidden="true"></i> NY Times Education</span>
-              <h3>Attendance, intervention, and student support</h3>
-              <p>Districts continue to rebalance instructional recovery with social and family services.</p>
-              <a href="https://www.nytimes.com/section/education" target="_blank" rel="noreferrer">
-                Read education coverage <i class="ph ph-arrow-up-right" aria-hidden="true"></i>
-              </a>
-            </article>
-            <article>
-              <span><i class="ph ph-broadcast" aria-hidden="true"></i> BBC Education</span>
-              <h3>Teacher workload and classroom safety</h3>
-              <p>School leaders are watching staffing pressure, SEND services, and behavior policy closely.</p>
-              <a href="https://www.bbc.com/news/education" target="_blank" rel="noreferrer">
-                View latest reports <i class="ph ph-arrow-up-right" aria-hidden="true"></i>
-              </a>
-            </article>
-            <article>
-              <span><i class="ph ph-bank" aria-hidden="true"></i> AASA</span>
-              <h3>Federal policy and district operations</h3>
-              <p>Superintendents are tracking funding, sensitive locations guidance, and implementation timelines.</p>
-              <a href="https://www.aasa.org/resources" target="_blank" rel="noreferrer">
-                Follow resources <i class="ph ph-arrow-up-right" aria-hidden="true"></i>
-              </a>
-            </article>
+          <div class="news-rail reveal" aria-label="Education industry news">
+            <div class="news-grid" data-news-rail>
+              <article>
+                <span><i class="ph ph-newspaper-clipping" aria-hidden="true"></i> NY Times Education</span>
+                <h3>Attendance, intervention, and student support</h3>
+                <p>Districts continue to rebalance instructional recovery with social and family services.</p>
+                <a href="https://www.nytimes.com/section/education" target="_blank" rel="noreferrer">
+                  Read education coverage <i class="ph ph-arrow-up-right" aria-hidden="true"></i>
+                </a>
+              </article>
+              <article>
+                <span><i class="ph ph-broadcast" aria-hidden="true"></i> BBC Education</span>
+                <h3>Teacher workload and classroom safety</h3>
+                <p>School leaders are watching staffing pressure, SEND services, and behavior policy closely.</p>
+                <a href="https://www.bbc.com/news/education" target="_blank" rel="noreferrer">
+                  View latest reports <i class="ph ph-arrow-up-right" aria-hidden="true"></i>
+                </a>
+              </article>
+              <article>
+                <span><i class="ph ph-bank" aria-hidden="true"></i> AASA</span>
+                <h3>Federal policy and district operations</h3>
+                <p>Superintendents are tracking funding, sensitive locations guidance, and implementation timelines.</p>
+                <a href="https://www.aasa.org/resources" target="_blank" rel="noreferrer">
+                  Follow resources <i class="ph ph-arrow-up-right" aria-hidden="true"></i>
+                </a>
+              </article>
+              <article>
+                <span><i class="ph ph-chart-line-up" aria-hidden="true"></i> EdWeek</span>
+                <h3>AI guidance and classroom adoption</h3>
+                <p>Instructional teams are watching policy, model access, assessment integrity, and teacher support.</p>
+                <a href="https://www.edweek.org/technology" target="_blank" rel="noreferrer">
+                  Track technology coverage <i class="ph ph-arrow-up-right" aria-hidden="true"></i>
+                </a>
+              </article>
+              <article>
+                <span><i class="ph ph-books" aria-hidden="true"></i> Publishers Weekly</span>
+                <h3>Curriculum publishing and literacy demand</h3>
+                <p>Publishers continue to adjust product roadmaps around reading requirements and adoption windows.</p>
+                <a href="https://www.publishersweekly.com/pw/by-topic/childrens/childrens-industry-news/index.html" target="_blank" rel="noreferrer">
+                  Read industry notes <i class="ph ph-arrow-up-right" aria-hidden="true"></i>
+                </a>
+              </article>
+              <article>
+                <span><i class="ph ph-student" aria-hidden="true"></i> The 74</span>
+                <h3>Learning recovery and tutoring models</h3>
+                <p>District leaders are measuring which interventions produce durable gains for priority cohorts.</p>
+                <a href="https://www.the74million.org/" target="_blank" rel="noreferrer">
+                  Scan education reports <i class="ph ph-arrow-up-right" aria-hidden="true"></i>
+                </a>
+              </article>
+              <article>
+                <span><i class="ph ph-globe-hemisphere-west" aria-hidden="true"></i> OECD Education</span>
+                <h3>Global skills benchmarks and readiness</h3>
+                <p>Policy teams are comparing digital skills, workforce readiness, and international assessment trends.</p>
+                <a href="https://www.oecd.org/en/topics/education.html" target="_blank" rel="noreferrer">
+                  Review global signals <i class="ph ph-arrow-up-right" aria-hidden="true"></i>
+                </a>
+              </article>
+            </div>
           </div>
         </div>
       </section>
