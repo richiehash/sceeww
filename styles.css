@@ -2196,6 +2196,21 @@ h1 {
     font-size: clamp(32px, 9.4vw, 46px);
   }
 
+  .basal .section-grid {
+    grid-template-columns: minmax(0, 1fr);
+    gap: 34px;
+    width: 100%;
+  }
+
+  .basal .section-copy {
+    width: 100%;
+    max-width: none;
+  }
+
+  .basal .section-copy p {
+    max-width: 34rem;
+  }
+
   .product-stage {
     --product-nav-height: 320px;
     --product-stage-gap: 8px;
@@ -2243,7 +2258,9 @@ h1 {
   }
 
   .curriculum-conveyor {
+    width: 100%;
     min-height: 410px;
+    transform: none;
   }
 
   .conveyor-track {
