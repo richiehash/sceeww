@@ -77,19 +77,20 @@ const assessmentStates = [
 
 const getWrappedIndex = (index, length) => ((index % length) + length) % length;
 
-const setCurriculumRowWords = (row, words, offset = 0) => {
-  const visibleWords = Array.from({ length: 4 }, (_, index) => {
-    const wordIndex = offset + index;
-    return words[getWrappedIndex(wordIndex, words.length)];
-  });
+const setCurriculumRowWords = (row, words) => {
+  const visibleWords = [...words, ...words];
   const nodes = Array.from(row.querySelectorAll("[data-curriculum-word]"));
 
-  while (nodes.length < 4) {
+  while (nodes.length < visibleWords.length) {
     const node = document.createElement("span");
     node.className = "conveyor-word";
     node.dataset.curriculumWord = "";
     row.appendChild(node);
     nodes.push(node);
+  }
+
+  while (nodes.length > visibleWords.length) {
+    nodes.pop().remove();
   }
 
   nodes.forEach((node, index) => {
@@ -115,28 +116,9 @@ const startCurriculumConveyor = () => {
   curriculumRows.forEach((row, index) => {
     const words = curriculumWordRows[index] || curriculumWordRows[0];
     const reverse = index % 2 === 1;
-    row.dataset.curriculumNextWord = reverse ? "-1" : "4";
     row.classList.toggle("is-reversing", reverse);
-    setCurriculumRowWords(row, words, 0);
+    setCurriculumRowWords(row, words);
   });
-
-  if (reducedMotion.matches) return;
-
-  window.setInterval(() => {
-    curriculumRows.forEach((row, index) => {
-      const words = curriculumWordRows[index] || curriculumWordRows[0];
-      const reverse = index % 2 === 1;
-
-      row.classList.add("is-advancing");
-      window.setTimeout(() => {
-        row.classList.add("is-resetting");
-        row.classList.remove("is-advancing");
-        recycleCurriculumRow(row, words, reverse);
-        void row.offsetHeight;
-        row.classList.remove("is-resetting");
-      }, 620);
-    });
-  }, 1000);
 };
 
 const animateAssessmentValue = (node, fromValue, toValue) => {
