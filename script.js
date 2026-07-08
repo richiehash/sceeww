@@ -15,6 +15,13 @@ const assessmentDotsWrap = document.querySelector("[data-assessment-dots]");
 const assessmentDots = Array.from(document.querySelectorAll("[data-assessment-dots] span"));
 const newsSection = document.querySelector(".industry-news");
 const newsRail = document.querySelector("[data-news-rail]");
+const contactModal = document.querySelector("[data-contact-modal]");
+const contactOpenButtons = Array.from(document.querySelectorAll("[data-contact-open]"));
+const contactCloseButtons = Array.from(document.querySelectorAll("[data-contact-close]"));
+const contactForm = document.querySelector("[data-contact-form]");
+const contactStartedInput = document.querySelector("[data-contact-started]");
+const contactStatus = document.querySelector("[data-contact-status]");
+const contactSubmit = document.querySelector("[data-contact-submit]");
 const reducedMotion = window.matchMedia("(prefers-reduced-motion: reduce)");
 
 const clamp = (value, min = 0, max = 1) => Math.min(Math.max(value, min), max);
@@ -639,6 +646,95 @@ const scrollToHash = (hash, behavior = "smooth") => {
   window.setTimeout(revealVisibleItems, behavior === "smooth" ? 360 : 80);
 };
 
+const setContactStatus = (message = "", state = "") => {
+  if (!contactStatus) return;
+
+  contactStatus.textContent = message;
+  contactStatus.classList.toggle("is-error", state === "error");
+  contactStatus.classList.toggle("is-success", state === "success");
+};
+
+const setContactStartedAt = () => {
+  if (!contactStartedInput) return;
+
+  contactStartedInput.value = String(Math.floor(Date.now() / 1000));
+};
+
+const openContactModal = () => {
+  if (!contactModal) return;
+
+  contactModal.hidden = false;
+  document.body.classList.add("is-contact-modal-open");
+  setContactStartedAt();
+  setContactStatus("");
+  window.setTimeout(() => contactForm?.querySelector("input, select, textarea")?.focus(), 40);
+};
+
+const closeContactModal = () => {
+  if (!contactModal) return;
+
+  contactModal.hidden = true;
+  document.body.classList.remove("is-contact-modal-open");
+};
+
+contactOpenButtons.forEach((button) => {
+  button.addEventListener("click", (event) => {
+    event.preventDefault();
+    openContactModal();
+  });
+});
+
+contactCloseButtons.forEach((button) => {
+  button.addEventListener("click", closeContactModal);
+});
+
+contactModal?.addEventListener("click", (event) => {
+  if (event.target === contactModal) {
+    closeContactModal();
+  }
+});
+
+document.addEventListener("keydown", (event) => {
+  if (event.key === "Escape" && contactModal && !contactModal.hidden) {
+    closeContactModal();
+  }
+});
+
+contactForm?.addEventListener("submit", async (event) => {
+  event.preventDefault();
+
+  if (!contactForm.checkValidity()) {
+    contactForm.reportValidity();
+    return;
+  }
+
+  contactForm.classList.add("is-sending");
+  contactSubmit?.setAttribute("disabled", "disabled");
+  setContactStatus("Sending your message...");
+
+  try {
+    const response = await fetch(contactForm.action, {
+      method: "POST",
+      body: new FormData(contactForm),
+      headers: { Accept: "application/json" },
+    });
+    const result = await response.json().catch(() => ({}));
+
+    if (!response.ok || result.ok === false) {
+      throw new Error(result.message || "The message could not be sent. Please try again.");
+    }
+
+    contactForm.reset();
+    setContactStartedAt();
+    setContactStatus(result.message || "Thanks. Your message has been sent.", "success");
+  } catch (error) {
+    setContactStatus(error.message || "The message could not be sent. Please try again.", "error");
+  } finally {
+    contactForm.classList.remove("is-sending");
+    contactSubmit?.removeAttribute("disabled");
+  }
+});
+
 const revealObserver = new IntersectionObserver(
   (entries) => {
     entries.forEach((entry) => {
@@ -693,6 +789,8 @@ window.addEventListener("load", updateScrollEffects);
 
 document.querySelectorAll('a[href^="#"]').forEach((link) => {
   link.addEventListener("click", (event) => {
+    if (event.defaultPrevented) return;
+
     const hash = link.getAttribute("href");
 
     if (!hash || hash === "#") return;

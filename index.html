@@ -13,7 +13,7 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="assets/phosphor/phosphor.css" />
-    <link rel="stylesheet" href="styles.css?v=professional-hero-type" />
+    <link rel="stylesheet" href="styles.css?v=about-light-compact" />
   </head>
   <body>
     <div class="scroll-progress" aria-hidden="true"></div>
@@ -41,7 +41,7 @@
         <a href="#contact">Contact</a>
       </nav>
 
-      <a class="header-cta" href="#contact">Start a project <i class="ph ph-arrow-right" aria-hidden="true"></i></a>
+      <a class="header-cta" href="#contact-form" data-contact-open>Start a project <i class="ph ph-arrow-right" aria-hidden="true"></i></a>
     </header>
 
     <main id="top">
@@ -341,38 +341,41 @@
         <div class="about-inner">
           <div class="about-copy reveal">
             <div class="about-heading">
-              <h2>An experienced product partner for serious education work.</h2>
+              <p class="label">About School Solutions</p>
+              <h2>A practical partner for complex education product work.</h2>
               <p>
-                School Solutions brings editorial, assessment, technology, and standards expertise into one coordinated
-                team. The result is a cleaner path from concept to classroom-ready materials.
+                Since 2000, School Solutions has supported educational publishers with a flexible team, careful
+                listening, and a systems approach to moving work from plan to classroom-ready delivery.
               </p>
             </div>
-            <div class="about-detail">
-              <div class="about-stats" aria-label="Company strengths">
-                <span><i class="ph ph-stack" aria-hidden="true"></i><strong>4</strong> production disciplines</span>
-                <span><i class="ph ph-student" aria-hidden="true"></i><strong>K-12</strong> grade coverage</span>
-                <span><i class="ph ph-target" aria-hidden="true"></i><strong>Multi-state</strong> standards work</span>
-              </div>
+            <div class="about-stats" aria-label="Company strengths">
+              <span><strong>2000</strong><em>founded</em></span>
+              <span><strong>60+</strong><em>professionals</em></span>
             </div>
           </div>
-          <div class="focus-slider reveal" data-focus-slider aria-label="Industry focus areas">
-            <div class="focus-grid">
+          <div class="about-system reveal">
+            <div class="about-principles" aria-label="How School Solutions works">
               <article>
-                <span><i class="ph ph-books" aria-hidden="true"></i></span>
-                <h3>Publisher Programs</h3>
-                <p>Basal, supplemental, and ancillary materials with dependable production structure.</p>
+                <i class="ph ph-ear" aria-hidden="true"></i>
+                <h3>Listen first</h3>
+                <p>Requirements, review cycles, and client priorities are clarified before implementation begins.</p>
               </article>
               <article>
-                <span><i class="ph ph-map-trifold" aria-hidden="true"></i></span>
-                <h3>State Readiness</h3>
-                <p>Assessment and correlation work tuned for state-level requirements and review cycles.</p>
+                <i class="ph ph-arrows-clockwise" aria-hidden="true"></i>
+                <h3>Stay flexible</h3>
+                <p>The team remains responsive as scope, schedules, and stakeholder feedback evolve.</p>
               </article>
               <article>
-                <span><i class="ph ph-devices" aria-hidden="true"></i></span>
-                <h3>Digital Delivery</h3>
-                <p>Student-facing and family-facing products that make the learning workflow visible.</p>
+                <i class="ph ph-flow-arrow" aria-hidden="true"></i>
+                <h3>Build systems</h3>
+                <p>Work is organized so editorial, standards, design, and delivery stay aligned.</p>
               </article>
             </div>
+
+            <figure class="about-quote">
+              <blockquote>Your customer service is the best of any company I’ve ever worked with.</blockquote>
+              <figcaption>SL, Curriculum Coordinator</figcaption>
+            </figure>
           </div>
         </div>
       </section>
@@ -451,10 +454,10 @@
           <p class="label">Ready for the next program</p>
           <h2>Bring curriculum, assessment, technology, and alignment into one sharper process.</h2>
           <div class="contact-actions">
-            <a class="button primary" href="mailto:contact@schoolsolutions.com">
+            <a class="button primary" href="#contact-form" data-contact-open>
               <i class="ph ph-envelope-simple" aria-hidden="true"></i> Contact us
             </a>
-            <a class="button secondary" href="#capabilities">
+            <a class="button secondary" href="#contact-form" data-contact-open>
               Start a project <i class="ph ph-arrow-right" aria-hidden="true"></i>
             </a>
           </div>
@@ -483,6 +486,8 @@
         <div class="footer-contact" aria-label="Company contact">
           <span>School Solutions, Inc.</span>
           <a href="mailto:contact@schoolsolutions.com">contact@schoolsolutions.com</a>
+          <p>1812 Front Street<br />Scotch Plains, NJ 07076</p>
+          <a href="tel:+19086632144">tel: (908) 663-2144</a>
         </div>
         <nav class="footer-nav" aria-label="Footer navigation">
           <a href="#capabilities">Capabilities</a>
@@ -498,6 +503,67 @@
       </div>
     </footer>
 
-    <script src="script.js?v=professional-hero-type"></script>
+    <div class="contact-modal" data-contact-modal hidden>
+      <div class="contact-modal-panel" role="dialog" aria-modal="true" aria-labelledby="contact-form-title">
+        <button class="contact-modal-close" type="button" data-contact-close aria-label="Close contact form">
+          <i class="ph ph-x" aria-hidden="true"></i>
+        </button>
+        <div class="contact-modal-copy">
+          <p class="label">Start a project</p>
+          <h2 id="contact-form-title">Tell us what you are building.</h2>
+          <p>
+            Share the program, product, or publishing workflow you have in mind. The message goes directly to
+            contact@schoolsolutions.com.
+          </p>
+        </div>
+        <form class="contact-form" action="send-contact.php" method="post" data-contact-form>
+          <div class="form-row">
+            <label>
+              <span>Name</span>
+              <input type="text" name="name" autocomplete="name" required />
+            </label>
+            <label>
+              <span>Email</span>
+              <input type="email" name="email" autocomplete="email" required />
+            </label>
+          </div>
+          <div class="form-row">
+            <label>
+              <span>Organization</span>
+              <input type="text" name="organization" autocomplete="organization" />
+            </label>
+            <label>
+              <span>Project type</span>
+              <select name="project_type" required>
+                <option value="">Select one</option>
+                <option>Curriculum</option>
+                <option>Assessment</option>
+                <option>Technology</option>
+                <option>Standards alignment</option>
+                <option>Publishing workflow</option>
+                <option>Other</option>
+              </select>
+            </label>
+          </div>
+          <label>
+            <span>Describe your project</span>
+            <textarea name="project_description" rows="6" required></textarea>
+          </label>
+          <label class="contact-honeypot" aria-hidden="true">
+            <span>Company website</span>
+            <input type="text" name="company_website" tabindex="-1" autocomplete="off" />
+          </label>
+          <input type="hidden" name="started_at" value="" data-contact-started />
+          <div class="contact-form-footer">
+            <p class="contact-form-status" data-contact-status aria-live="polite"></p>
+            <button class="button primary" type="submit" data-contact-submit>
+              <i class="ph ph-paper-plane-tilt" aria-hidden="true"></i> Send message
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+
+    <script src="script.js?v=about-light-compact"></script>
   </body>
 </html>
