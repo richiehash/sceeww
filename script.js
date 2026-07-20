@@ -15,6 +15,8 @@ const assessmentDotsWrap = document.querySelector("[data-assessment-dots]");
 const assessmentDots = Array.from(document.querySelectorAll("[data-assessment-dots] span"));
 const newsSection = document.querySelector(".industry-news");
 const newsRail = document.querySelector("[data-news-rail]");
+const newsScroll = document.querySelector("[data-news-scroll]");
+const testimonial = document.querySelector("[data-testimonial]");
 const contactModal = document.querySelector("[data-contact-modal]");
 const contactOpenButtons = Array.from(document.querySelectorAll("[data-contact-open]"));
 const contactCloseButtons = Array.from(document.querySelectorAll("[data-contact-close]"));
@@ -73,12 +75,27 @@ const assessmentStates = [
   {
     kicker: "District package",
     title: "Final Delivery",
-    value: 99,
+    value: 100,
   },
   {
     kicker: "Item bank",
     title: "Math Benchmark",
     value: 94,
+  },
+];
+
+const testimonials = [
+  {
+    quote: "Your customer service is the best of any company I’ve ever worked with.",
+    author: "SL, Curriculum Coordinator",
+  },
+  {
+    quote: "The team listened carefully, adapted quickly, and kept every part of the program moving.",
+    author: "Publishing Program Director",
+  },
+  {
+    quote: "School Solutions brought editorial rigor and practical systems to a very complex launch.",
+    author: "VP, Educational Products",
   },
 ];
 
@@ -609,26 +626,79 @@ const setNewsRailLoop = (isEnabled) => {
   return firstCard && firstClone ? Math.max(1, firstClone.offsetTop - firstCard.offsetTop) : 0;
 };
 
+let newsCycleDistance = 0;
+
 const updateNewsRailEffect = () => {
-  if (!newsSection || !newsRail) return;
+  if (!newsScroll || !newsRail) return;
 
-  const shouldAnimate = !reducedMotion.matches && !window.matchMedia("(max-width: 1060px)").matches;
-  const cycleDistance = setNewsRailLoop(shouldAnimate);
+  const shouldLinkToPageScroll = !reducedMotion.matches && !window.matchMedia("(max-width: 1060px)").matches;
+  newsCycleDistance = setNewsRailLoop(shouldLinkToPageScroll);
 
-  if (!shouldAnimate || !cycleDistance) {
-    newsRail.style.setProperty("--news-rail-y", "0px");
-    return;
-  }
+  if (!shouldLinkToPageScroll || !newsCycleDistance) return;
 
-  const rect = newsSection.getBoundingClientRect();
   const maxScrollY = Math.max(0, document.documentElement.scrollHeight - window.innerHeight);
   const startY = Math.min(Math.max(0, newsSection.offsetTop - window.innerHeight), maxScrollY);
-  const visibleHeight = newsRail.parentElement?.clientHeight || window.innerHeight;
-  const leadIn = Math.min(120, visibleHeight * 0.18);
-  const scrolled = Math.max(0, window.scrollY - startY);
-  const y = leadIn - ((scrolled / 2.8) % cycleDistance);
+  const pageDrivenPosition = (Math.max(0, window.scrollY - startY) / 2.8) % newsCycleDistance;
 
-  newsRail.style.setProperty("--news-rail-y", `${y.toFixed(1)}px`);
+  newsScroll.scrollTop = pageDrivenPosition;
+};
+
+newsScroll?.addEventListener("scroll", () => {
+  if (newsCycleDistance && newsScroll.scrollTop >= newsCycleDistance) {
+    newsScroll.scrollTop -= newsCycleDistance;
+  }
+}, { passive: true });
+
+const startTestimonialCarousel = () => {
+  if (!testimonial || testimonials.length < 2) return;
+
+  const quote = testimonial.querySelector("[data-testimonial-quote]");
+  const author = testimonial.querySelector("[data-testimonial-author]");
+  let activeIndex = 0;
+  let timer = null;
+
+  const setTestimonialSize = (text) => {
+    const length = text.trim().length;
+    testimonial.classList.toggle("is-medium", length > 64 && length <= 82);
+    testimonial.classList.toggle("is-long", length > 82);
+  };
+
+  const showTestimonial = (index) => {
+    const item = testimonials[index];
+    testimonial.classList.add("is-changing");
+
+    window.setTimeout(() => {
+      quote.textContent = item.quote;
+      author.textContent = item.author;
+      setTestimonialSize(item.quote);
+      testimonial.classList.remove("is-changing");
+    }, reducedMotion.matches ? 0 : 220);
+  };
+
+  const stop = () => {
+    if (timer) window.clearInterval(timer);
+    timer = null;
+  };
+
+  const start = () => {
+    if (reducedMotion.matches || timer) return;
+    timer = window.setInterval(() => {
+      activeIndex = (activeIndex + 1) % testimonials.length;
+      showTestimonial(activeIndex);
+    }, 6000);
+  };
+
+  testimonial.addEventListener("pointerenter", stop);
+  testimonial.addEventListener("pointerleave", start);
+  testimonial.addEventListener("focusin", stop);
+  testimonial.addEventListener("focusout", start);
+  reducedMotion.addEventListener?.("change", () => {
+    stop();
+    start();
+  });
+
+  setTestimonialSize(testimonials[activeIndex].quote);
+  start();
 };
 
 const scrollToHash = (hash, behavior = "smooth") => {
@@ -812,6 +882,7 @@ updateScrollEffects();
 startCurriculumConveyor();
 startAssessmentAnimation();
 startProductSlider();
+startTestimonialCarousel();
 requestAnimationFrame(revealVisibleItems);
 
 if (window.location.hash) {

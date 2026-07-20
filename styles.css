@@ -1673,11 +1673,13 @@ h1 {
   grid-template-columns: minmax(0, 1fr) minmax(280px, 0.36fr);
   gap: 18px;
   align-items: stretch;
+  height: 300px;
 }
 
 .about-principles {
   display: grid;
   grid-template-columns: repeat(3, minmax(0, 1fr));
+  height: 100%;
   border: 1px solid var(--line);
   border-radius: 12px;
   background: #fff;
@@ -1689,7 +1691,7 @@ h1 {
   display: grid;
   gap: 12px;
   align-content: start;
-  min-height: 214px;
+  min-height: 0;
   padding: clamp(22px, 2.4vw, 30px);
   border-right: 1px solid var(--line);
   transition:
@@ -1738,7 +1740,8 @@ h1 {
   display: grid;
   align-content: space-between;
   gap: 24px;
-  min-height: 214px;
+  height: 100%;
+  min-height: 0;
   margin: 0;
   padding: clamp(24px, 2.8vw, 34px);
   color: var(--ink);
@@ -1748,6 +1751,22 @@ h1 {
     linear-gradient(135deg, rgba(217, 91, 54, 0.1), transparent 58%),
     #fff;
   box-shadow: 0 18px 48px rgba(15, 23, 42, 0.06);
+  overflow: hidden;
+}
+
+.about-quote blockquote,
+.about-quote figcaption {
+  opacity: 1;
+  transform: translateY(0);
+  transition:
+    opacity 220ms ease,
+    transform 220ms ease;
+}
+
+.about-quote.is-changing blockquote,
+.about-quote.is-changing figcaption {
+  opacity: 0;
+  transform: translateY(8px);
 }
 
 .about-quote blockquote {
@@ -1757,6 +1776,16 @@ h1 {
   font-weight: 720;
   font-style: italic;
   line-height: 1.2;
+}
+
+.about-quote.is-medium blockquote {
+  font-size: clamp(19px, 1.55vw, 24px);
+  line-height: 1.24;
+}
+
+.about-quote.is-long blockquote {
+  font-size: clamp(17px, 1.35vw, 21px);
+  line-height: 1.28;
 }
 
 .about-quote blockquote::before {
@@ -1835,16 +1864,38 @@ h1 {
   position: relative;
   height: min(720px, 78svh);
   min-height: 520px;
-  overflow: hidden;
+  padding-right: 10px;
+  overflow-x: hidden;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-color: #fff transparent;
+  scrollbar-width: thin;
   -webkit-mask-image: linear-gradient(180deg, transparent 0, #000 12%, #000 88%, transparent 100%);
   mask-image: linear-gradient(180deg, transparent 0, #000 12%, #000 88%, transparent 100%);
+}
+
+.news-rail::-webkit-scrollbar {
+  width: 6px;
+}
+
+.news-rail::-webkit-scrollbar-track {
+  border-radius: 999px;
+  background: transparent;
+}
+
+.news-rail::-webkit-scrollbar-thumb {
+  border-radius: 999px;
+  background: #fff;
+}
+
+.news-rail:focus-visible {
+  outline: 2px solid rgba(255, 255, 255, 0.78);
+  outline-offset: 8px;
 }
 
 .news-grid {
   display: grid;
   gap: 14px;
-  transform: translate3d(0, var(--news-rail-y, 0px), 0);
-  will-change: transform;
 }
 
 .news-grid article {
@@ -1859,14 +1910,11 @@ h1 {
   background: rgba(255, 255, 255, 0.92);
   box-shadow: 0 24px 70px rgba(7, 12, 20, 0.26);
   backdrop-filter: blur(16px);
-  transition:
-    transform 240ms ease,
-    border-color 240ms ease;
+  transition: border-color 240ms ease;
 }
 
 .news-grid article:hover {
   border-color: rgba(255, 255, 255, 0.48);
-  transform: translateX(-6px);
 }
 
 .news-grid span {
@@ -2263,6 +2311,7 @@ body.is-contact-modal-open {
 
   .about-system {
     gap: 14px;
+    height: auto;
   }
 
   .news-inner {
@@ -2272,14 +2321,15 @@ body.is-contact-modal-open {
   .news-rail {
     height: auto;
     min-height: 0;
+    padding-right: 0;
     overflow: visible;
+    scrollbar-width: auto;
     -webkit-mask-image: none;
     mask-image: none;
   }
 
   .news-grid {
-    transform: none !important;
-    will-change: auto;
+    transform: none;
   }
 
   .section-copy {
@@ -2713,6 +2763,7 @@ body.is-contact-modal-open {
   }
 
   .about-quote {
+    height: auto;
     min-height: 0;
     padding: 20px;
   }
