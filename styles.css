@@ -264,13 +264,64 @@ main[id] {
 .hero-image {
   position: absolute;
   inset: 0;
+  overflow: hidden;
+}
+
+.depth-layer {
+  position: absolute;
+  inset: 0;
+  background-position: center;
+  background-repeat: no-repeat;
+  background-size: cover;
+  backface-visibility: hidden;
+  will-change: transform;
+}
+
+.hero-background-layer,
+.hero-foreground-layer {
+  background-position: center right;
+  transform-origin: 68% 52%;
+}
+
+.hero-background-layer {
+  background-image: url("assets/hero-room-background.png");
+  animation: hero-background-zoom 20s ease-in-out infinite alternate;
+}
+
+.hero-foreground-layer {
+  background-image: url("assets/hero-group-foreground.png");
+  animation: hero-foreground-zoom 20s ease-in-out infinite alternate;
+}
+
+.hero-image::after {
+  position: absolute;
+  inset: 0;
+  content: "";
   background:
     radial-gradient(circle at 72% 44%, rgba(255, 255, 255, 0.14), transparent 27%),
     linear-gradient(90deg, rgba(13, 18, 27, 0.98) 0%, rgba(13, 18, 27, 0.82) 32%, rgba(13, 18, 27, 0.22) 70%),
-    linear-gradient(180deg, rgba(13, 18, 27, 0.2), rgba(13, 18, 27, 0.64)),
-    url("assets/hero-education.png") center right / cover no-repeat;
-  transform: scale(1.03) translate3d(var(--hero-x, 0), var(--hero-y, 0), 0);
-  transition: transform 700ms cubic-bezier(0.2, 0.8, 0.2, 1);
+    linear-gradient(180deg, rgba(13, 18, 27, 0.2), rgba(13, 18, 27, 0.64));
+  pointer-events: none;
+}
+
+@keyframes hero-background-zoom {
+  from {
+    transform: translate3d(var(--hero-x, 0), var(--hero-y, 0), 0) scale(1.03);
+  }
+
+  to {
+    transform: translate3d(var(--hero-x, 0), var(--hero-y, 0), 0) scale(1.13);
+  }
+}
+
+@keyframes hero-foreground-zoom {
+  from {
+    transform: translate3d(var(--hero-x, 0), var(--hero-y, 0), 0) scale(1.13);
+  }
+
+  to {
+    transform: translate3d(var(--hero-x, 0), var(--hero-y, 0), 0) scale(1.03);
+  }
 }
 
 .hero-shade {
@@ -755,23 +806,15 @@ h1 {
   min-width: 100%;
   justify-self: start;
   overflow: visible;
-  animation: conveyor-scroll 30s linear infinite;
   will-change: transform;
-}
-
-.conveyor-row.is-reversing {
-  animation-direction: reverse;
-  animation-duration: 34s;
 }
 
 .row-two {
   margin-left: 0;
-  animation-duration: 28s;
 }
 
 .row-three {
   margin-left: clamp(20px, 3vw, 42px);
-  animation-duration: 32s;
 }
 
 .conveyor-word {
@@ -799,15 +842,9 @@ h1 {
   transform: rotateZ(0.001deg);
 }
 
-@keyframes conveyor-scroll {
-  to {
-    transform: translateX(calc(-50% - (var(--conveyor-gap) / 2)));
-  }
-}
-
 @media (prefers-reduced-motion: reduce) {
   .conveyor-row {
-    animation: none;
+    transform: none !important;
   }
 }
 
@@ -1967,17 +2004,71 @@ h1 {
 }
 
 .contact-section {
+  position: relative;
   display: grid;
   place-items: center;
   min-height: 78svh;
   padding: 104px clamp(20px, 7vw, 104px);
+  overflow: hidden;
   color: #fff;
+  background: #0b0f16;
+}
+
+.contact-image {
+  position: absolute;
+  inset: 0;
+  overflow: hidden;
+}
+
+.contact-background-layer,
+.contact-foreground-layer {
+  background-position: center;
+  transform-origin: 50% 54%;
+}
+
+.contact-background-layer {
+  background-image: url("assets/contact-room-background.png");
+  animation: contact-background-zoom 20s ease-in-out infinite alternate;
+}
+
+.contact-foreground-layer {
+  background-image: url("assets/contact-team-foreground.png");
+  animation: contact-foreground-zoom 20s ease-in-out infinite alternate;
+}
+
+.contact-image::after {
+  position: absolute;
+  inset: 0;
+  content: "";
   background:
     linear-gradient(90deg, rgba(11, 15, 22, 0.9) 0%, rgba(17, 24, 39, 0.78) 48%, rgba(11, 15, 22, 0.86) 100%),
-    url("assets/contact-program-team.png") center / cover no-repeat;
+    linear-gradient(180deg, rgba(11, 15, 22, 0.08), rgba(11, 15, 22, 0.2));
+  pointer-events: none;
+}
+
+@keyframes contact-background-zoom {
+  from {
+    transform: scale(1.03);
+  }
+
+  to {
+    transform: scale(1.13);
+  }
+}
+
+@keyframes contact-foreground-zoom {
+  from {
+    transform: scale(1.13);
+  }
+
+  to {
+    transform: scale(1.03);
+  }
 }
 
 .contact-card {
+  position: relative;
+  z-index: 1;
   width: min(100%, 980px);
   text-align: center;
 }
@@ -2288,6 +2379,14 @@ body.is-contact-modal-open {
     animation-iteration-count: 1 !important;
     transition-duration: 0.001ms !important;
   }
+
+  .hero-background-layer,
+  .hero-foreground-layer,
+  .contact-background-layer,
+  .contact-foreground-layer {
+    animation: none !important;
+    transform: scale(1.06);
+  }
 }
 
 @media (max-width: 1060px) {
@@ -2435,10 +2534,18 @@ body.is-contact-modal-open {
   }
 
   .hero-image {
+    background: none;
+  }
+
+  .hero-background-layer,
+  .hero-foreground-layer {
+    background-position: 78% center;
+  }
+
+  .hero-image::after {
     background:
       radial-gradient(circle at 70% 22%, rgba(255, 255, 255, 0.14), transparent 24%),
-      linear-gradient(180deg, rgba(15, 21, 31, 0.8), rgba(15, 21, 31, 0.97) 62%),
-      url("assets/hero-education.png") 62% center / cover no-repeat;
+      linear-gradient(180deg, rgba(15, 21, 31, 0.8), rgba(15, 21, 31, 0.97) 62%);
   }
 
   .hero::before {
@@ -2448,9 +2555,10 @@ body.is-contact-modal-open {
 
   .contact-section {
     min-height: 68svh;
-    background:
-      linear-gradient(180deg, rgba(11, 15, 22, 0.82), rgba(11, 15, 22, 0.94)),
-      url("assets/contact-program-team.png") 50% center / cover no-repeat;
+  }
+
+  .contact-image::after {
+    background: linear-gradient(180deg, rgba(11, 15, 22, 0.82), rgba(11, 15, 22, 0.94));
   }
 
   h1 {

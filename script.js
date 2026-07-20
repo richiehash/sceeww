@@ -7,6 +7,7 @@ const standardsSection = document.querySelector("[data-standards-scroll]");
 const productStage = document.querySelector("[data-product-stage]");
 const productSlides = Array.from(document.querySelectorAll("[data-product-slide]"));
 const productDots = Array.from(document.querySelectorAll("[data-product-dots] button"));
+const basalSection = document.querySelector(".basal");
 const curriculumRows = Array.from(document.querySelectorAll(".conveyor-row"));
 const assessmentHero = document.querySelector("[data-assessment-hero]");
 const assessmentFlow = document.querySelector("[data-assessment-flow]");
@@ -139,9 +140,29 @@ const startCurriculumConveyor = () => {
 
   curriculumRows.forEach((row, index) => {
     const words = curriculumWordRows[index] || curriculumWordRows[0];
-    const reverse = index % 2 === 1;
-    row.classList.toggle("is-reversing", reverse);
     setCurriculumRowWords(row, words);
+  });
+};
+
+const updateCurriculumConveyor = () => {
+  if (!basalSection || !curriculumRows.length) return;
+
+  if (reducedMotion.matches) {
+    curriculumRows.forEach((row) => row.style.removeProperty("transform"));
+    return;
+  }
+
+  const sectionRect = basalSection.getBoundingClientRect();
+  const scrollRange = window.innerHeight + sectionRect.height;
+  const sectionProgress = clamp((window.innerHeight - sectionRect.top) / scrollRange);
+
+  curriculumRows.forEach((row, index) => {
+    const rowStyles = window.getComputedStyle(row);
+    const rowGap = Number.parseFloat(rowStyles.columnGap || rowStyles.gap) || 0;
+    const cycleDistance = (row.scrollWidth + rowGap) / 2;
+    const rowProgress = index % 2 === 1 ? 1 - sectionProgress : sectionProgress;
+
+    row.style.transform = `translate3d(${-cycleDistance * rowProgress}px, 0, 0)`;
   });
 };
 
@@ -840,6 +861,7 @@ let scrollFrame = null;
 
 const updateScrollEffects = () => {
   setScrollState();
+  updateCurriculumConveyor();
   updateStandardsEffect();
   updateNewsRailEffect();
 };
@@ -878,8 +900,8 @@ document.querySelectorAll('a[href^="#"]').forEach((link) => {
 window.addEventListener("hashchange", () => scrollToHash(window.location.hash));
 
 setLedgerOutput(0, true);
-updateScrollEffects();
 startCurriculumConveyor();
+updateScrollEffects();
 startAssessmentAnimation();
 startProductSlider();
 startTestimonialCarousel();

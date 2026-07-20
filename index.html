@@ -8,12 +8,13 @@
       content="School Solutions creates curriculum, assessment, technology, and standards-alignment infrastructure for K-12 publishers and education teams."
     />
     <title>School Solutions | Education Infrastructure</title>
-    <link rel="preload" href="assets/hero-education.png" as="image" />
+    <link rel="preload" href="assets/hero-room-background.png" as="image" />
+    <link rel="preload" href="assets/hero-group-foreground.png" as="image" />
     <link rel="preconnect" href="https://fonts.googleapis.com" />
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300..900&display=swap" rel="stylesheet" />
     <link rel="stylesheet" href="assets/phosphor/phosphor.css" />
-    <link rel="stylesheet" href="styles.css?v=about-light-compact" />
+    <link rel="stylesheet" href="styles.css?v=group-depth-zoom" />
   </head>
   <body>
     <div class="scroll-progress" aria-hidden="true"></div>
@@ -46,7 +47,10 @@
 
     <main id="top">
       <section class="hero section-observe" id="home">
-        <div class="hero-image" aria-hidden="true"></div>
+        <div class="hero-image depth-scene" aria-hidden="true">
+          <div class="depth-layer hero-background-layer"></div>
+          <div class="depth-layer hero-foreground-layer"></div>
+        </div>
         <div class="hero-shade" aria-hidden="true"></div>
         <div class="hero-content reveal">
           <p class="label">Established K-12 product development</p>
@@ -118,7 +122,7 @@
             </ul>
           </div>
 
-          <div class="visual-panel curriculum-visual reveal" aria-label="Animated curriculum topic conveyor">
+          <div class="visual-panel curriculum-visual reveal" aria-label="Scroll-driven curriculum topic conveyor">
             <div class="curriculum-conveyor" data-curriculum-conveyor aria-hidden="true">
               <div class="conveyor-glow"></div>
               <div class="conveyor-track">
@@ -234,7 +238,7 @@
             </div>
 
             <div class="product-slide product-slide-image" data-product-slide style="--slide-index: 1">
-              <img class="product-slide-art" src="assets/mobile-app.png" alt="Mobile habit tracking product screens" />
+              <img class="product-slide-art" src="assets/iphone-16-pro.png" alt="Mobile daily plan and learning analytics screens" />
             </div>
 
             <div class="product-slide product-slide-desktop" data-product-slide style="--slide-index: 2">
@@ -252,7 +256,7 @@
             </div>
 
             <div class="product-slide product-slide-image" data-product-slide style="--slide-index: 3">
-              <img class="product-slide-art" src="assets/mobile-app.png" alt="Mobile progress reporting product screens" />
+              <img class="product-slide-art" src="assets/iphone-16.png" alt="Mobile habit journal and fitness planning screens" />
             </div>
 
             <div class="product-dots" data-product-dots aria-label="Product mockup slides">
@@ -260,17 +264,17 @@
                 <strong>Teacher dashboard</strong>
                 <span>Assignments, grading, and feedback.</span>
               </button>
-              <button type="button" aria-label="Show mobile habits slide">
-                <strong>Mobile habits</strong>
-                <span>Progress patterns for families.</span>
+              <button type="button" aria-label="Show daily guidance slide">
+                <strong>Daily guidance</strong>
+                <span>Learning plans and personal analytics in one view.</span>
               </button>
               <button type="button" aria-label="Show student hub slide">
                 <strong>Student hub</strong>
                 <span>Resources and messages in one place.</span>
               </button>
-              <button type="button" aria-label="Show reporting signals slide">
-                <strong>Reporting signals</strong>
-                <span>Compact cards for quick trend checks.</span>
+              <button type="button" aria-label="Show personal journal slide">
+                <strong>Personal journal</strong>
+                <span>Habits, movement, and reflection made actionable.</span>
               </button>
             </div>
           </div>
@@ -450,6 +454,10 @@
       </section>
 
       <section class="contact-section section-observe" id="contact">
+        <div class="contact-image depth-scene" aria-hidden="true">
+          <div class="depth-layer contact-background-layer"></div>
+          <div class="depth-layer contact-foreground-layer"></div>
+        </div>
         <div class="contact-card reveal">
           <p class="label">Ready for the next program</p>
           <h2>Bring curriculum, assessment, technology, and alignment into one sharper process.</h2>
@@ -564,6 +572,6 @@
       </div>
     </div>
 
-    <script src="script.js?v=about-light-compact"></script>
+    <script src="script.js?v=group-depth-zoom"></script>
   </body>
 </html>
